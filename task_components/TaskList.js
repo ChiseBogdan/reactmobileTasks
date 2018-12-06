@@ -14,7 +14,7 @@ export class TaskList extends Component {
         
         return (
         <Consumer>
-            {({issue, tasks}) => (
+            {({issue, tasks, updateTask}) => (
 
                 issue   ? 
                 <View style={{justifyContent:"center"}}>
@@ -27,7 +27,7 @@ export class TaskList extends Component {
                     {tasks && 
                     (<FlatList
                         data = {tasks}
-                        renderItem = {({item}) => <TaskView onSelectTask={this.props.onSelectItem} key={item.key} id={item.key} priority={item.priority} description={item.description}/>}
+                        renderItem = {({item}) => <TaskView onUpdateTask={updateTask} onSelectTask={this.props.onSelectItem} key={item.key} id={item.key} priority={item.priority} description={item.description}/>}
 
                     />)    
 

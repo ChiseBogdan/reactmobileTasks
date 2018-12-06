@@ -4,34 +4,54 @@ import {Provider} from '../core/context';
 
 export default class TaskStore extends Component {
 
-    state = {
-        tasks: null,
-        issue: null,
+    constructor(props){
+        super(props)
+
+        this.state = {
+
+            tasks: null,
+            issue: null,
+            updateTask: null,
+            shouldUpdate: false,
+        }
+    }
+    
+    shouldComponentUpdate(nextProps, nextState){
+    
+        if(nextState.shouldUpdate === true){
+            this.setState({shouldUpdate: false})
+            this.loadTasks()
+        }
+
+        return true
     }
 
     componentDidMount() {
         this.loadTasks();
-
-    }
-
-    udpateTask = () =>{
-
-        console.log("UPDATE SHOUULD BE MADE")
-
-        // console.log(task)
-        // console.log(task.id)
         
-
-        // fetch(`${httpApiUrl}/tasks`)
-        // .then(response => response.json())
-        // .then(tasks=>{
-        //     this.setState({tasks: tasks}) 
-        // })
-        // .catch(error => this.setState({ issue: error }));
-
-
+        console.log("MOunTER")
 
     }
+
+    _updateTask = async task => {
+        const response = await fetch( httpApiUrl + '/tasks', {
+          method: 'PUT',
+          headers: {'content-type': 'application/json'},
+          body: JSON.stringify(task),
+        })
+      
+        if (response.ok) {
+
+            this.setState({shouldUpdate: true})
+            return 'OK'
+        }
+
+        const errMessage = await response.text()
+        throw new Error(errMessage)
+      
+       
+      }
+
 
     loadTasks = () => {
         
@@ -39,7 +59,7 @@ export default class TaskStore extends Component {
         fetch(`${httpApiUrl}/tasks`)
         .then(response => response.json())
         .then(tasks=>{
-            this.setState({tasks: tasks}) 
+            this.setState({tasks: tasks, updateTask: this._updateTask}) 
         })
         .catch(error => this.setState({ issue: error }));
         

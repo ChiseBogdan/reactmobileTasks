@@ -23,11 +23,13 @@ export default class UpdateView extends React.Component{
         this.setState({priority})
     }
 
-    handleUpdateButtonPressed = () =>{
-        
+    handleUpdateButtonPressed = async () =>{
 
-        console.log("pressed")
-        console.log(this.props)
+        const udpateTaskFunction = this.props.navigation.getParam('onUpdateTask')
+        await udpateTaskFunction({id: this.state.id, description: this.state.description, priority: this.state.priority})
+        
+        this.props.navigation.pop()
+
     }
 
     render(){
