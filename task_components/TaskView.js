@@ -1,26 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 
-export default class TaskView extends React.Component{
 
-    state = {
-        id: '',
-    }
+const TaskView = props =>(
 
-    handleTaskOnPress(){
-        console.log(this.props)
-    }
-
-    render(){
-        return(
-            <TouchableOpacity onPress={this.handleTaskOnPress.bind(this)} style={styles.row}>            
-                <Text>Priority: {this.props.priority}</Text>
-                <Text>Description: {this.props.description}</Text>
-            </TouchableOpacity>
-        )
-    }
-
-}
+    <TouchableOpacity onPress={() => props.onSelectTask(props)} style={styles.row}>            
+        <Text>Priority: {props.priority}</Text>
+        <Text>Description: {props.description}</Text>
+    </TouchableOpacity>
+)
 
 const styles = StyleSheet.create({
 
@@ -29,4 +17,6 @@ const styles = StyleSheet.create({
     },
 
 })
+
+export default TaskView
 

@@ -1,31 +1,55 @@
 import React from 'react'
-import {Text, Button, StyleSheet, View} from 'react-native'
-
+import {Text, TextInput, Button, StyleSheet, View} from 'react-native'
+import { Consumer } from '../core/context';
 
 
 export default class UpdateView extends React.Component{
 
     constructor(props){
         super(props);
+
+        this.state = {
+            id: props.navigation.getParam('id'),
+            description: props.navigation.getParam('description'),
+            priority: props.navigation.getParam('priority'),
+          } 
     }
 
-   onUpdateButtonPressed = () =>{
+    handleDescriptionChange = description =>{
+        this.setState({description})
+    }
 
-        console.log('id')
-        console.log("BUTTON PRESSED")
+    handlePriorityChange = priority =>{
+        this.setState({priority})
+    }
+
+    handleUpdateButtonPressed = () =>{
+        
+
+        console.log("pressed")
+        console.log(this.props)
     }
 
     render(){
         return (
-        <View style={styles.container}>            
-            <Text>Priority: </Text>
-            <Text>Description:</Text>
-            <Button 
-                title = 'Update'
-                onPress={() => this.onUpdateButtonPressed}
-            />
-    
-        </View>
+                <View style={styles.container}>            
+
+                    <Text>Description</Text>
+                    <TextInput 
+                        value = {this.state.description}
+                        onChangeText = {this.handleDescriptionChange}>            
+                    </TextInput>
+                    <Text>Priority</Text>
+                    <TextInput 
+                        value = {this.state.priority.toString()}
+                        onChangeText = {this.handlePriorityChange}>
+                    </TextInput>
+                    <Button 
+                        title = 'Update'
+                        onPress={this.handleUpdateButtonPressed}
+                    />
+            
+                </View>
         )
     }
 
@@ -37,7 +61,8 @@ export default class UpdateView extends React.Component{
 const styles = StyleSheet.create({
 
     container:{
-        padding:20,
+        justifyContent: 'center',
+        flex: 1,
     },
 
 })

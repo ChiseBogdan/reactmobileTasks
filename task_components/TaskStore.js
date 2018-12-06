@@ -10,16 +10,35 @@ export default class TaskStore extends Component {
     }
 
     componentDidMount() {
-        this.loadNotes();
+        this.loadTasks();
+
     }
 
-    loadNotes = () => {
+    udpateTask = () =>{
+
+        console.log("UPDATE SHOUULD BE MADE")
+
+        // console.log(task)
+        // console.log(task.id)
+        
+
+        // fetch(`${httpApiUrl}/tasks`)
+        // .then(response => response.json())
+        // .then(tasks=>{
+        //     this.setState({tasks: tasks}) 
+        // })
+        // .catch(error => this.setState({ issue: error }));
+
+
+
+    }
+
+    loadTasks = () => {
         
 
         fetch(`${httpApiUrl}/tasks`)
         .then(response => response.json())
         .then(tasks=>{
-           
             this.setState({tasks: tasks}) 
         })
         .catch(error => this.setState({ issue: error }));

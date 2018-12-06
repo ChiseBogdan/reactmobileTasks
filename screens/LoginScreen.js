@@ -20,7 +20,7 @@ export default class LoginScreen extends React.Component{
     }
 
     onLoginButtonPress = () =>{
-        this.props.navigation.push('Main')
+        this.props.navigation.replace('Main')
     }
 
     render(){

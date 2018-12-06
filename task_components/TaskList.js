@@ -6,9 +6,12 @@ import TaskView from './TaskView'
 export class TaskList extends Component {
 
 
-    renderItem = ({item}) => <TaskView key={item.key} id={item.key} priority={item.priority} description={item.description}/>
+    // renderItem = ({item}) => <TaskView key={item.key} id={item.key} priority={item.priority} description={item.description}/>
+
+    
 
     render() {
+        
         return (
         <Consumer>
             {({issue, tasks}) => (
@@ -21,10 +24,10 @@ export class TaskList extends Component {
                        : 
                 
                 <View style={{paddingTop:50}}>
-                    {tasks &&
+                    {tasks && 
                     (<FlatList
                         data = {tasks}
-                        renderItem = {this.renderItem}
+                        renderItem = {({item}) => <TaskView onSelectTask={this.props.onSelectItem} key={item.key} id={item.key} priority={item.priority} description={item.description}/>}
 
                     />)    
 
@@ -34,6 +37,6 @@ export class TaskList extends Component {
             )}
             
         </Consumer>
-        );
+        )
     }
 }

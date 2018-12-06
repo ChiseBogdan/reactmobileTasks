@@ -7,20 +7,16 @@ import UpdateView from './UpdateView';
 
 export default class MainView extends React.Component{
 
-  update = () =>{
-    console.log('HEREHRER')
-  }
-
-  componentDidMount(){
-    
+  handleSelectTask = task =>{
+    this.props.navigation.push('Update', task)
   }
 
   render(){
     return(
 
       <View>
-        <TaskStore update={this.update}>
-          <TaskList/>
+        <TaskStore>
+          <TaskList onSelectItem={this.handleSelectTask}/>
         </TaskStore>
       </View>
 
