@@ -1,6 +1,7 @@
 import { httpApiUrl } from '../core/api';
 import React, {Component} from 'react';
 import {Provider} from '../core/context';
+import {AsyncStorage} from 'react-native'
 
 export default class TaskStore extends Component {
 
@@ -28,40 +29,61 @@ export default class TaskStore extends Component {
 
     componentDidMount() {
         this.loadTasks();
-        
-        console.log("MOunTER")
-
     }
 
-    _updateTask = async task => {
-        const response = await fetch( httpApiUrl + '/tasks', {
-          method: 'PUT',
-          headers: {'content-type': 'application/json'},
-          body: JSON.stringify(task),
-        })
-      
-        if (response.ok) {
+    
 
-            this.setState({shouldUpdate: true})
-            return 'OK'
+    _updateTask = task => {
+
+        this._retrieveAuthorizationToken().then(auth =>{
+
+            fetch(`${httpApiUrl}/tasks/update`,{
+                method: 'PUT',
+                headers: {'content-type': 'application/json', 'Authorization': auth},
+                body: JSON.stringify(task),
+            })
+            .then(response => {
+                
+                const {status} = response
+                if(status == 200){  
+                    this.setState({shouldUpdate: true})
+                }
+            
+            })
+            .catch(error => this.setState({ issue: error }));
+
+        })       
+    }
+
+    _retrieveAuthorizationToken = async () => {
+        try {
+          const value = await AsyncStorage.getItem('authorization');
+          if (value !== null) {
+                return value
+            }
+        } catch (error) {
+           console.log(error)
         }
-
-        const errMessage = await response.text()
-        throw new Error(errMessage)
-      
-       
-      }
+    }
 
 
     loadTasks = () => {
         
+        this._retrieveAuthorizationToken().then(auth =>{
 
-        fetch(`${httpApiUrl}/tasks`)
-        .then(response => response.json())
-        .then(tasks=>{
-            this.setState({tasks: tasks, updateTask: this._updateTask}) 
+            fetch(`${httpApiUrl}/tasks`,{
+                method: 'GET',
+                headers: {'content-type': 'application/json', 'Authorization': auth},
+            })
+            .then(response => response.json())
+            .then(tasks=>{
+                this.setState({tasks: tasks, updateTask: this._updateTask}) 
+            })
+            .catch(error => this.setState({ issue: error }));
+
         })
-        .catch(error => this.setState({ issue: error }));
+
+        
         
     };
 

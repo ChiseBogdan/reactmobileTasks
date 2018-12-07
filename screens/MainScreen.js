@@ -12,6 +12,7 @@ export default class MainView extends React.Component{
   }
 
   render(){
+
     return(
 
       <View>

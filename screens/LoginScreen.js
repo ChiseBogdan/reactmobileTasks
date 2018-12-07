@@ -1,11 +1,14 @@
 import React from 'react'
-import {View, Button, StyleSheet, TextInput} from 'react-native'
+import {View, Button, StyleSheet, TextInput, Text, AsyncStorage} from 'react-native'
+
+import {login} from '../core/api'
 
 export default class LoginScreen extends React.Component{
 
     state = {
         username: '',
         password: '',
+        issue: null,
 
     }
 
@@ -19,8 +22,28 @@ export default class LoginScreen extends React.Component{
         this.setState({password})
     }
 
+    _store_token = async token =>{
+
+        try {
+            await AsyncStorage.setItem('authorization', token);
+          } catch (error) {
+            console.log("ERROR WHEN TRYING TO PERSIST DATA")
+          }
+
+    }
+
     onLoginButtonPress = () =>{
-        this.props.navigation.replace('Main')
+        
+        this.setState({issue: null})
+        login(this.state.username, this.state.password).then(response =>{
+            
+            this._store_token(response)
+            this.props.navigation.replace('Main')
+
+        }).catch(error => {
+            this.setState({issue: "INVALID USERNAME OR PASSWORD"})
+        })
+        
     }
 
     render(){
@@ -45,6 +68,8 @@ export default class LoginScreen extends React.Component{
                 title = 'Log in'
                 onPress = {this.onLoginButtonPress}
                 />
+
+                <Text>{this.state.issue}</Text>
 
             </View>
 

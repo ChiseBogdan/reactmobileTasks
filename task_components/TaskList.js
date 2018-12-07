@@ -27,7 +27,8 @@ export class TaskList extends Component {
                     {tasks && 
                     (<FlatList
                         data = {tasks}
-                        renderItem = {({item}) => <TaskView onUpdateTask={updateTask} onSelectTask={this.props.onSelectItem} key={item.key} id={item.key} priority={item.priority} description={item.description}/>}
+                        renderItem = {({item}) => <TaskView onUpdateTask={updateTask} onSelectTask={this.props.onSelectItem} id={item.id} priority={item.priority} description={item.description}/>}
+                        keyExtractor={(item) => item.id.toString()}
 
                     />)    
 
